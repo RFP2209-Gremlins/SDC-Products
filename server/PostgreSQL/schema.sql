@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS photos (
 CREATE TABLE IF NOT EXISTS skus (
   id SERIAL PRIMARY KEY,
   style_id INT REFERENCES styles(id),
-  size VARCHAR(5),
+  size VARCHAR(10),
   quantity INT
 );
 
@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS related (
   related_id INT NOT NULL
 );
 
-\COPY product FROM '../../data/product.csv' DELIMITER ',' CSV HEADER;
-\COPY features FROM '../../data/features.csv' DELIMITER ',' CSV HEADER;
-\COPY styles FROM '../../data/styles.csv' DELIMITER ',' CSV HEADER;
-\COPY photos FROM '../../data/skus.csv' DELIMITER ',' CSV HEADER;
-\COPY skus FROM '../../data/photos.csv' DELIMITER ',' CSV HEADER;
-\COPY related FROM '../../data/related.csv' DELIMITER ',' CSV HEADER;
+\COPY product FROM 'data/product.csv' DELIMITER ',' CSV HEADER;
+\COPY features FROM 'data/features.csv' DELIMITER ',' CSV HEADER;
+\COPY styles FROM 'data/styles.csv' DELIMITER ',' CSV HEADER;
+\COPY photos FROM 'data/photos.csv' DELIMITER ',' CSV HEADER;
+\COPY skus FROM 'data/skus.csv' DELIMITER ',' CSV HEADER;
+\COPY related FROM 'data/related.csv' DELIMITER ',' CSV HEADER;

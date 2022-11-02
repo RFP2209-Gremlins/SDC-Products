@@ -7,11 +7,11 @@ const app = express();
 app.use(express.json());
 
 app.get('/test', (req, res) => {
-  db.query('SELECT * FROM product', (err, products) => {
+  db.query('SELECT * FROM product WHERE id=1', (err, product) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.status(200).send(products);
+      res.status(200).send(product);
     }
   });
 });
