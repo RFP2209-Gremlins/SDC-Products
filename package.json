@@ -1,0 +1,22 @@
+{
+  "name": "sdc-products",
+  "version": "1.0.0",
+  "description": "products API for FEC(project atelier)",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RFP2209-Gremlins/SDC-Products.git"
+  },
+  "author": "Stephanie Chen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RFP2209-Gremlins/SDC-Products/issues"
+  },
+  "homepage": "https://github.com/RFP2209-Gremlins/SDC-Products#readme",
+  "dependencies": {
+    "pg": "^8.8.0"
+  }
+}
