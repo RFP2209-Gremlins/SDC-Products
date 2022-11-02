@@ -1,8 +1,10 @@
+DROP DATABASE products;
+
 CREATE DATABASE products;
 
-USE products;
+\c products;
 
-CREATE TABLE product (
+CREATE TABLE IF NOT EXISTS product (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   slogan TEXT,
@@ -11,38 +13,45 @@ CREATE TABLE product (
   default_price VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE features (
+CREATE TABLE IF NOT EXISTS features (
   id SERIAL PRIMARY KEY,
   product_id INT REFERENCES product(id),
   feature VARCHAR(50) NOT NULL,
-  value VARCHAR(50),
+  value VARCHAR(50)
 );
 
-CREATE TABLE styles (
+CREATE TABLE IF NOT EXISTS styles (
   id SERIAL PRIMARY KEY,
   product_id INT REFERENCES product(id),
   name VARCHAR(100) NOT NULL,
   sale_price VARCHAR(10),
   original_price VARCHAR(10) NOT NULL,
-  'default?' BOOLEAN NOT NULL
+  default_style BOOLEAN NOT NULL
 );
 
-CREATE TABLE photos (
+CREATE TABLE IF NOT EXISTS photos (
   id SERIAL PRIMARY KEY,
-  style_id INT REFERENCES style(id),
+  style_id INT REFERENCES styles(id),
   url TEXT,
   thumbnail_url TEXT
 );
 
-CREATE TABLE skus (
+CREATE TABLE IF NOT EXISTS skus (
   id SERIAL PRIMARY KEY,
-  style_id INT REFERENCES style(id),
+  style_id INT REFERENCES styles(id),
   size VARCHAR(5),
   quantity INT
 );
 
-CREATE TABLE related (
+CREATE TABLE IF NOT EXISTS related (
   id SERIAL PRIMARY KEY,
   product_id INT REFERENCES product(id),
   related_id INT NOT NULL
 );
+
+\COPY product FROM '../../data/product.csv' DELIMITER ',' CSV HEADER;
+\COPY features FROM '../../data/features.csv' DELIMITER ',' CSV HEADER;
+\COPY styles FROM '../../data/styles.csv' DELIMITER ',' CSV HEADER;
+\COPY photos FROM '../../data/skus.csv' DELIMITER ',' CSV HEADER;
+\COPY skus FROM '../../data/photos.csv' DELIMITER ',' CSV HEADER;
+\COPY related FROM '../../data/related.csv' DELIMITER ',' CSV HEADER;

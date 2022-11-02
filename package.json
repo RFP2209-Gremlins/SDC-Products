@@ -4,6 +4,7 @@
   "description": "products API for FEC(project atelier)",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon ./server/PostGreSQL/app.js",
     "test": "test"
   },
   "repository": {
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/RFP2209-Gremlins/SDC-Products#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "pg": "^8.8.0"
   }
 }
