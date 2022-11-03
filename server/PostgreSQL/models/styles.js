@@ -6,7 +6,7 @@ const getStyles = async (product_id, cb) => {
   };
 
   try {
-    let stylesData = await db.query(`SELECT * FROM styles WHERE product_id=${product_id}`);
+    let stylesData = await db.query(`SELECT style_id, name, sale_price, original_price, default_style FROM styles WHERE product_id=${product_id}`);
     data.results = stylesData.rows;
   } catch (err) {
     cb(err);
@@ -16,8 +16,8 @@ const getStyles = async (product_id, cb) => {
   let skusQ = [];
 
   for (let i = 0; i < data.results.length; i++) {
-    photosQ.push(db.query(`SELECT thumbnail_url, url FROM photos WHERE style_id=${data.results[i].id}`));
-    skusQ.push(db.query(`SELECT id, size, quantity FROM skus WHERE style_id=${data.results[i].id}`));
+    photosQ.push(db.query(`SELECT thumbnail_url, url FROM photos WHERE style_id=${data.results[i].style_id}`));
+    skusQ.push(db.query(`SELECT id, size, quantity FROM skus WHERE style_id=${data.results[i].style_id}`));
   }
 
   try {
