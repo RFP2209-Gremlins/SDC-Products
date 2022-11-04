@@ -1,15 +1,22 @@
 const db = require('../db');
 
-const getProduct = async (product_id, cb) => {
-  try {
-    let productData = await db.query(`SELECT * FROM product WHERE id=${product_id}`);
-    let featuresData = await db.query(`SELECT feature, value FROM features WHERE product_id=${product_id}`);
-    let data = productData.rows[0];
-    data.features = featuresData.rows;
-    cb(null, data);
-  } catch (err) {
-    cb(err);
-  }
+const getProduct = (product_id) => {
+  let query = `SELECT json_build_object(
+    'id', id,
+    'name', name,
+    'slogan', slogan,
+    'description', description,
+    'category', category,
+    'default_price', default_price,
+    'features', (SELECT json_agg(
+      json_build_object(
+        'feature', feature,
+        'value', value
+      )
+    ) FROM features WHERE product_id=${product_id})
+  ) FROM product WHERE id=${product_id}`;
+
+  return db.query(query);
 };
 
 module.exports = getProduct;

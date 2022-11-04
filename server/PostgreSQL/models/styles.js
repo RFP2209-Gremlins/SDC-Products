@@ -1,15 +1,25 @@
 const db = require('../db');
 
-const getStyles = async (product_id, cb) => {
-  const data = {
-    product_id
-  };
+const getStyles = async (product_id) => {
+  let data;
 
   try {
-    let stylesData = await db.query(`SELECT style_id, name, sale_price, original_price, default_style FROM styles WHERE product_id=${product_id}`);
-    data.results = stylesData.rows;
+    let query = `SELECT json_build_object(
+      'product_id', ${product_id},
+      'results', (SELECT json_agg(
+        json_build_object(
+          'style_id', id,
+          'name', name,
+          'original_price', original_price,
+          'sale_price', sale_price,
+          'default?', default_style
+        )
+      ) FROM styles WHERE product_id=${product_id})
+    )`;
+    data = await db.query(query);
+    data = data.rows[0].json_build_object;
   } catch (err) {
-    cb(err);
+    return err;
   }
 
   let photosQ = [];
@@ -24,19 +34,27 @@ const getStyles = async (product_id, cb) => {
     let photosData = await Promise.all(photosQ);
     let skusData = await Promise.all(skusQ);
     for (let i = 0; i < data.results.length; i++) {
+      let currentPhotos = photosData[i].rows;
+      if (!currentPhotos.length) {
+        data.results[i].photos = [{ thumbnail_url: null, url: null }];
+      } else {
+        data.results[i].photos = currentPhotos.rows;
+      }
       let currentSkus = skusData[i].rows;
       let skus = {};
-      for (let j = 0; j < currentSkus.length; j++) {
-        skus[currentSkus[j].id] = {quantity: currentSkus[j].quantity, size: currentSkus[j].size};
+      if (!currentSkus.length) {
+        skus.null = { quantity: null, size: null };
+      } else {
+        for (let j = 0; j < currentSkus.length; j++) {
+          skus[currentSkus[j].id] = { quantity: currentSkus[j].quantity, size: currentSkus[j].size };
+        }
       }
-      data.results[i].photos = photosData[i].rows;
       data.results[i].skus = skus;
     }
+    return data;
   } catch (err) {
-    cb(err);
+    return err;
   }
-
-  cb(null, data);
 };
 
 module.exports = getStyles;

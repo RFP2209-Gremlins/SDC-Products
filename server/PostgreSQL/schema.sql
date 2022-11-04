@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS features (
 );
 
 CREATE TABLE IF NOT EXISTS styles (
-  style_id SERIAL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   product_id INT REFERENCES product(id),
   name VARCHAR(100) NOT NULL,
   sale_price VARCHAR(10),
@@ -31,14 +31,14 @@ CREATE TABLE IF NOT EXISTS styles (
 
 CREATE TABLE IF NOT EXISTS photos (
   id SERIAL PRIMARY KEY,
-  style_id INT REFERENCES styles(style_id),
+  style_id INT REFERENCES styles(id),
   url TEXT,
   thumbnail_url TEXT
 );
 
 CREATE TABLE IF NOT EXISTS skus (
   id SERIAL PRIMARY KEY,
-  style_id INT REFERENCES styles(style_id),
+  style_id INT REFERENCES styles(id),
   size VARCHAR(10),
   quantity INT
 );

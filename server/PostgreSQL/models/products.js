@@ -1,15 +1,10 @@
 const db = require('../db');
 
-const getProducts = async (page, count, cb) => {
+const getProducts = (page, count) => {
   page = page || 1;
   count = count || 5;
 
-  try {
-    let data = await db.query(`SELECT * FROM product WHERE id > ${(page - 1) * count} LIMIT ${count}`);
-    cb(null, data.rows);
-  } catch (err) {
-    cb(err);
-  }
+  return db.query(`SELECT * FROM product OFFSET ${(page - 1) * count} LIMIT ${count}`);
 };
 
 module.exports = getProducts;

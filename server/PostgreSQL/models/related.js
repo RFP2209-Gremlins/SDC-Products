@@ -1,13 +1,9 @@
 const db = require('../db');
 
-const getRelated = async (product_id, cb) => {
-  try {
-    let relatedData = await db.query(`SELECT related_id FROM related WHERE product_id=${product_id}`);
-    let data = relatedData.rows.map(item => item.related_id);
-    cb(null, data);
-  } catch (err) {
-    cb(err);
-  }
+const getRelated = (product_id) => {
+  let query = `SELECT json_agg(related_id) FROM related WHERE product_id=${product_id}`;
+
+  return db.query(query);
 };
 
 module.exports = getRelated;
