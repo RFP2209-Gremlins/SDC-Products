@@ -38,7 +38,7 @@ const getStyles = async (product_id) => {
       if (!currentPhotos.length) {
         data.results[i].photos = [{ thumbnail_url: null, url: null }];
       } else {
-        data.results[i].photos = currentPhotos.rows;
+        data.results[i].photos = currentPhotos;
       }
       let currentSkus = skusData[i].rows;
       let skus = {};
