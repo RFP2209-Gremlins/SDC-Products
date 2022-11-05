@@ -49,6 +49,13 @@ CREATE TABLE IF NOT EXISTS related (
   related_id INT NOT NULL
 );
 
+CREATE INDEX product_index ON product(id);
+CREATE INDEX features_index ON features(product_id);
+CREATE INDEX styles_index ON styles(product_id);
+CREATE INDEX photos_index ON photos(style_id);
+CREATE INDEX skus_index ON skus(style_id);
+CREATE INDEX related_index ON related(product_id);
+
 \COPY product FROM 'data/product.csv' DELIMITER ',' CSV HEADER;
 \COPY features FROM 'data/features.csv' DELIMITER ',' CSV HEADER;
 \COPY styles FROM 'data/styles.csv' DELIMITER ',' CSV HEADER;
